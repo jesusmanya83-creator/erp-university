@@ -1,12 +1,759 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ERP University - Reportes por Alumno</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Top Social Bar */
+        .social-bar {
+            background-color: #e8e8e8;
+            padding: 8px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #003d7a;
+        }
+
+        .top-menu {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .top-menu a {
+            color: #666;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .top-menu a:hover {
+            color: #003d7a;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #003d7a 0%, #0056a8 100%);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #003d7a;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+        }
+
+        .user-select {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-select select {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        .user-info span {
+            font-size: 14px;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            background-color: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #003d7a;
+            font-weight: bold;
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            min-height: calc(100vh - 120px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 215px;
+            background-color: #003d7a;
+            color: white;
+        }
+
+        .menu-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: background-color 0.3s;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .submenu-item {
+            padding: 12px 20px 12px 40px;
+            cursor: pointer;
+            background-color: #e8e8e8;
+            border-bottom: 1px solid #d0d0d0;
+            transition: background-color 0.3s;
+            font-size: 13px;
+            color: #333;
+        }
+
+        .submenu-item:hover {
+            background-color: #d8d8d8;
+        }
+
+        .submenu-item.active {
+            background-color: #c8c8c8;
+            border-left: 3px solid #003d7a;
+        }
+
+        .submenu-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px 30px;
+            background-color: #f9f9f9;
+        }
+
+        .breadcrumb {
+            background-color: #e8e8e8;
+            padding: 10px 20px;
+            margin: -20px -30px 20px -30px;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            color: #003d7a;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 20px;
+            background-color: white;
+            border-left: 4px solid #003d7a;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            text-transform: uppercase;
+        }
+
+        /* Student Info Card */
+        .student-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .student-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .student-details {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 10px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #333;
+            min-width: 180px;
+        }
+
+        .detail-value {
+            color: #555;
+        }
+
+        .student-photo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .photo-placeholder {
+            width: 140px;
+            height: 180px;
+            background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .student-id {
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .semester-select {
+            margin-top: 15px;
+        }
+
+        .semester-select select {
+            padding: 8px 40px 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Reports Section */
+        .reports-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .report-column h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .report-column ul {
+            list-style: none;
+        }
+
+        .report-column li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .report-column a {
+            color: #555;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .report-column a:hover {
+            color: #003d7a;
+            text-decoration: underline;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 95%;
+            max-width: 1400px;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            background-color: #e8e8e8;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .close-btn:hover {
+            background-color: #d0d0d0;
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+            position: relative;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .report-logo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .university-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .university-logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        .university-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #003d7a;
+            line-height: 1.2;
+            text-align: left;
+        }
+
+        .university-name-line1 {
+            font-size: 32px;
+        }
+
+        .report-meta {
+            text-align: right;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .report-title {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin: 25px 0;
+            text-transform: uppercase;
+        }
+
+        .student-info-modal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            min-width: 150px;
+        }
+
+        .info-value {
+            color: #555;
+        }
+
+        .grades-note {
+            font-style: italic;
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .grades-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-size: 13px;
+        }
+
+        .grades-table th {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .grades-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .grades-table td:first-child,
+        .grades-table td:nth-child(2) {
+            text-align: left;
+        }
+
+        .grades-table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .highlight-red {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .modal-footer {
+            padding: 15px 25px;
+            border-top: 1px solid #e8e8e8;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-close-modal {
+            padding: 10px 30px;
+            background-color: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-close-modal:hover {
+            background-color: #555;
+        }
+
+        /* Watermark (SIN VALOR OFICIAL repetido) */
+        .report-content {
+            position: relative;
+        }
+
+        .report-content::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='260'><g transform='rotate(-35 200 130)' fill='none' stroke='%23ff3b3b' stroke-opacity='0.42' stroke-width='5'><rect x='30' y='95' width='340' height='70' rx='8'/><text x='200' y='147' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='44' font-weight='bold' fill='%23ff3b3b' fill-opacity='0.40' stroke='none'>SIN VALOR OFICIAL</text></g></svg>");
+            background-repeat: repeat;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Maintenance Modal Styles */
+        .maintenance-modal .modal-content {
+            max-width: 600px;
+        }
+
+        .maintenance-content {
+            text-align: center;
+        }
+
+        .maintenance-body {
+            padding: 50px 40px !important;
+        }
+
+        .maintenance-icon {
+            font-size: 80px;
+            color: #FFA500;
+            margin-bottom: 25px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .maintenance-body h2 {
+            font-size: 28px;
+            color: #003d7a;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .maintenance-body p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .maintenance-signature {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e8e8e8;
+        }
+
+        .maintenance-logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .maintenance-signature p {
+            font-size: 15px;
+            color: #003d7a;
+            margin: 5px 0;
+        }
+
+        .maintenance-signature p:last-child {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .student-details {
+                grid-template-columns: 1fr;
+            }
+
+            .reports-section {
+                grid-template-columns: 1fr;
+            }
+
+            .student-info-modal {
+                grid-template-columns: 1fr;
+            }
+
+            .grades-table {
+                font-size: 11px;
+            }
+
+            .grades-table th,
+            .grades-table td {
+                padding: 6px 4px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .student-header {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .modal-content {
+                width: 100%;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .report-logo {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .report-meta {
+                text-align: center;
+            }
+
+            .maintenance-body {
+                padding: 30px 20px !important;
+            }
+
+            .maintenance-icon {
+                font-size: 60px;
+            }
+
+            .maintenance-body h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <!-- Social Bar -->
     <div class="social-bar">
@@ -119,11 +866,11 @@
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Último Semestre Estudiado:</span>
-                            <span class="detail-value">2025-1</span>
+                            <span class="detail-value">2026-1</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Créditos:</span>
-                            <span class="detail-value">91.00</span>
+                            <span class="detail-value">118.00</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Grupo / Versión:</span>
@@ -139,12 +886,13 @@
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">PPAES:</span>
-                            <span class="detail-value">15.396 <strong>PSA</strong> 15.143</span>
+                            <span class="detail-value">15.144 <strong>PSA</strong> 15.167</span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Semestre:</span>
                             <div class="semester-select">
                                 <select>
+                                    <option>2026-2</option>
                                     <option>2025-2</option>
                                     <option>2025-1</option>
                                     <option>2024-2</option>
@@ -155,7 +903,9 @@
                     </div>
                     <div class="student-photo">
                         <div class="photo-placeholder">
-                            <i class="fas fa-user" style="font-size: 60px; color: #999;"></i>
+                            <img src="images/NDMC.png" alt="Foto del alumno"
+                                onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <i class="fas fa-user" style="font-size: 60px; color: #999; display: none;"></i>
                         </div>
                         <span class="student-id">72889026</span>
                     </div>
@@ -166,12 +916,14 @@
                     <div class="report-column">
                         <h3>Reportes Consolidados</h3>
                         <ul>
-                            <li><a href="#" class="report-link" data-maintenance="true">Asignaturas Matriculadas</a></li>
+                            <li><a href="#" class="report-link" data-maintenance="true">Asignaturas Matriculadas</a>
+                            </li>
                             <li><a href="#" class="report-link" data-maintenance="true">Boleta de Notas</a></li>
                             <li><a href="#" id="detailedGradesLink">Reporte de Notas Detalladas</a></li>
                             <li><a href="#" class="report-link" data-maintenance="true">Convalidaciones</a></li>
                             <li><a href="#" class="report-link" data-maintenance="true">Historial de Notas DSA</a></li>
-                            <li><a href="#" class="report-link" data-maintenance="true">Historial de Notas del Plan Actual</a></li>
+                            <li><a href="#" class="report-link" data-maintenance="true">Historial de Notas del Plan
+                                    Actual</a></li>
                         </ul>
                     </div>
                     <div class="report-column">
@@ -201,259 +953,197 @@
                 <button class="close-btn" onclick="closeModal('gradesModal')">×</button>
             </div>
             <div class="modal-body">
-                <div class="watermark">OFICIAL</div>
-                
-                <div class="report-header">
-                    <div class="report-logo">
-                        <div class="university-logo">
-                            <img src="images/logo-uac.png" alt="Universidad Andina del Cusco">
-                            <div>
-                                <div class="university-name">
-                                    <div class="university-name-line1">Universidad</div>
-                                    <div>Andina</div>
-                                    <div>del Cusco</div>
+                <div class="report-content">
+
+                    <div class="report-header">
+                        <div class="report-logo">
+                            <div class="university-logo">
+                                <img src="data:image/png;base64,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"
+                                    alt="Universidad Andina del Cusco">
+                                <div>
+                                    <div class="university-name">
+                                        <div class="university-name-line1">Universidad</div>
+                                        <div>Andina</div>
+                                        <div>del Cusco</div>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="report-meta">
+                                <div>Erp University</div>
+                                <div>01-01-2026 09:56:21</div>
+                                <div>Usuario: 023101010f</div>
+                            </div>
                         </div>
-                        <div class="report-meta">
-                            <div>Erp University</div>
-                            <div>01-01-2026 09:56:21</div>
-                            <div>Usuario: 023101010f</div>
+                        <div class="report-title">REPORTE DE NOTAS DETALLADAS</div>
+                    </div>
+
+                    <div class="student-info-modal">
+                        <div class="info-row">
+                            <span class="info-label">Alumno</span>
+                            <span class="info-value">: MANYA CAIRO NIEVES DAMARIS</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Código</span>
+                            <span class="info-value">: 023101010f</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Facultad</span>
+                            <span class="info-value">: FACULTAD DE CIENCIAS DE LA SALUD</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Escuela Profesional</span>
+                            <span class="info-value">: MEDICINA HUMANA</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Semestre:</span>
+                            <span class="info-value">: 2026-2</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Modalidad</span>
+                            <span class="info-value">: PRESENCIAL</span>
                         </div>
                     </div>
-                    <div class="report-title">REPORTE DE NOTAS DETALLADAS</div>
+
+                    <div class="grades-note">*Los Cursos sin notas no se mostrarán</div>
+
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Asignatura</th>
+                                <th>Nombre de la Asignatura</th>
+                                <th>Créd.</th>
+                                <th colspan="2">APORTE 01</th>
+                                <th colspan="2">APORTE 02</th>
+                                <th colspan="2">APORTE 03</th>
+                                <th>FÓRMULA</th>
+                                <th>PROM.<br>FINAL</th>
+                                <th>Tur.</th>
+                                <th>Secc.</th>
+                                <th>Docente</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>PA</th>
+                                <th>PROM</th>
+                                <th>PA</th>
+                                <th>PROM</th>
+                                <th>PA</th>
+                                <th>PROM</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MED035</td>
+                                <td class="course-name">FARMACOLOGIA CLINICA Y TERAPEUTICA I</td>
+                                <td>5.00</td>
+                                <td>17</td>
+                                <td class="highlight-red">17</td>
+                                <td>11</td>
+                                <td class="highlight-red">14</td>
+                                <td></td>
+                                <td></td>
+                                <td>(AP01 * 1 + AP02 * 1 + AP03 * 1)/3</td>
+                                <td>10</td>
+                                <td>T</td>
+                                <td>6A</td>
+                                <td>MORALES MERCADO REYNALDO</td>
+                            </tr>
+                            <tr>
+                                <td>MED101</td>
+                                <td class="course-name">SEMIOLOGIA II (CURSO INTEGRADO)</td>
+                                <td>9.00</td>
+                                <td></td>
+                                <td></td>
+                                <td colspan="4"></td>
+                                <td>(AP01 * 1)/1</td>
+                                <td></td>
+                                <td>M</td>
+                                <td>6D</td>
+                                <td>YUNGURI CCORI FRANCISCO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="section-title">APORTE ÚNICO</div>
+
+                    <table class="grades-table">
+                        <thead>
+                            <tr>
+                                <th>Asignatura</th>
+                                <th>Nombre de la Asignatura</th>
+                                <th>Segmento</th>
+                                <th colspan="2">APORTE ÚNICO</th>
+                                <th>FÓRMULA</th>
+                                <th>PROM.<br>FINAL</th>
+                                <th>Tur.</th>
+                                <th>Secc.</th>
+                                <th>Gr.</th>
+                                <th>Docente</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>PA</th>
+                                <th>PROM</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MED101</td>
+                                <td>SEMIOLOGIA II</td>
+                                <td>RENAL</td>
+                                <td></td>
+                                <td></td>
+                                <td>(AP01 * 1)/1</td>
+                                <td>0</td>
+                                <td>N</td>
+                                <td>6D</td>
+                                <td>A</td>
+                                <td>UCAÑANI ASCUE MIGUEL ALEJANDRO</td>
+                            </tr>
+                            <tr>
+                                <td>MED101</td>
+                                <td>SEMIOLOGIA II</td>
+                                <td>ENDOCRINOLOGIA</td>
+                                <td></td>
+                                <td></td>
+                                <td>(AP01 * 1)/1</td>
+                                <td>0</td>
+                                <td>T</td>
+                                <td>6D</td>
+                                <td>B</td>
+                                <td>GRANDA MOSQUEIRA GUEYDY ANNYFRID</td>
+                            </tr>
+                            <tr>
+                                <td>MED101</td>
+                                <td>SEMIOLOGIA II</td>
+                                <td>NEUROLOGIA</td>
+                                <td></td>
+                                <td></td>
+                                <td>(AP01 * 1)/1</td>
+                                <td>0</td>
+                                <td>T</td>
+                                <td>6D</td>
+                                <td>C</td>
+                                <td>YUNGURI CCORI FRANCISCO</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <div class="student-info-modal">
-                    <div class="info-row">
-                        <span class="info-label">Alumno</span>
-                        <span class="info-value">: MANYA CAIRO NIEVES DAMARIS</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Código</span>
-                        <span class="info-value">: 023101010f</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Facultad</span>
-                        <span class="info-value">: FACULTAD DE CIENCIAS DE LA SALUD</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Escuela Profesional</span>
-                        <span class="info-value">: MEDICINA HUMANA</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Semestre:</span>
-                        <span class="info-value">: 2025-2</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Modalidad</span>
-                        <span class="info-value">: PRESENCIAL</span>
-                    </div>
-                </div>
-
-                <div class="grades-note">*Los Cursos sin notas no se mostrarán</div>
-
-                <table class="grades-table">
-                    <thead>
-                        <tr>
-                            <th>Asignatura</th>
-                            <th>Nombre de la Asignatura</th>
-                            <th>Créd.</th>
-                            <th colspan="2">APORTE 01</th>
-                            <th colspan="2">APORTE 02</th>
-                            <th colspan="2">APORTE 03</th>
-                            <th>FÓRMULA</th>
-                            <th>PROM.<br>FINAL</th>
-                            <th>Tur.</th>
-                            <th>Secc.</th>
-                            <th>Docente</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>PA</th>
-                            <th>PROM</th>
-                            <th>PA</th>
-                            <th>PROM</th>
-                            <th>PA</th>
-                            <th>PROM</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>MED040</td>
-                            <td>DIAGNOSTICO POR IMAGENES</td>
-                            <td>3.00</td>
-                            <td class="highlight-red">14</td>
-                            <td class="highlight-red">14</td>
-                            <td>14</td>
-                            <td>14</td>
-                            <td>14</td>
-                            <td>14</td>
-                            <td>(AP01 * 1 + AP02 * 1 + AP03 * 1)/3</td>
-                            <td class="highlight-red">14</td>
-                            <td>M</td>
-                            <td>6B</td>
-                            <td>FLORES REVILLA ERICK GUSTAVO</td>
-                        </tr>
-                        <tr>
-                            <td>MED102</td>
-                            <td>FISIOPATOLOGIA I</td>
-                            <td>2.00</td>
-                            <td>18</td>
-                            <td>18</td>
-                            <td>18</td>
-                            <td>18</td>
-                            <td>17</td>
-                            <td>17</td>
-                            <td>(AP01 * 1 + AP02 * 1 + AP03 * 1)/3</td>
-                            <td>18</td>
-                            <td>N</td>
-                            <td>5A</td>
-                            <td>MENENDEZ SANJINES JULIO PAUL</td>
-                        </tr>
-                        <tr>
-                            <td>INV001</td>
-                            <td>METODOLOGIA DE LA INVESTIGACION</td>
-                            <td>3.00</td>
-                            <td class="highlight-red">16</td>
-                            <td class="highlight-red">16</td>
-                            <td>15</td>
-                            <td>15</td>
-                            <td>16</td>
-                            <td>16</td>
-                            <td>(AP01 * 1 + AP02 * 1 + AP03 * 1)/3</td>
-                            <td>16</td>
-                            <td>N</td>
-                            <td>5B</td>
-                            <td>TAGLE VEGA URIEL MAURICIO</td>
-                        </tr>
-                        <tr>
-                            <td>MED104</td>
-                            <td>PATOLOGIA GENERAL Y ESPECIAL</td>
-                            <td>4.00</td>
-                            <td class="highlight-red">12</td>
-                            <td class="highlight-red">12</td>
-                            <td>13</td>
-                            <td>13</td>
-                            <td class="highlight-red">16</td>
-                            <td class="highlight-red">16</td>
-                            <td>(AP01 * 1 + AP02 * 1 + AP03 * 1)/3</td>
-                            <td>14</td>
-                            <td>T</td>
-                            <td>5B</td>
-                            <td>TTITO NOA ANDERSON GANDY</td>
-                        </tr>
-                        <tr>
-                            <td>MED100</td>
-                            <td>SEMIOLOGIA I (CURSO INTEGRADO)</td>
-                            <td>10.00</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>(AP01 * 1)/1</td>
-                            <td>13</td>
-                            <td>M</td>
-                            <td>5C</td>
-                            <td>MUNDACA QUISPE RONNY WILLIAM</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="section-title">APORTE ÚNICO</div>
-
-                <table class="grades-table">
-                    <thead>
-                        <tr>
-                            <th>Asignatura</th>
-                            <th>Nombre de la Asignatura</th>
-                            <th>Segmento</th>
-                            <th colspan="2">APORTE ÚNICO</th>
-                            <th>FÓRMULA</th>
-                            <th>PROM.<br>FINAL</th>
-                            <th>Tur.</th>
-                            <th>Secc.</th>
-                            <th>Gr.</th>
-                            <th>Docente</th>
-                        </tr>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th>PA</th>
-                            <th>PROM</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>MED100</td>
-                            <td>SEMIOLOGIA I</td>
-                            <td>GENERAL</td>
-                            <td>14</td>
-                            <td>14</td>
-                            <td>(AP01 * 1)/1</td>
-                            <td>14</td>
-                            <td>M</td>
-                            <td>5C</td>
-                            <td>A</td>
-                            <td>MUNDACA QUISPE RONNY WILLIAM</td>
-                        </tr>
-                        <tr>
-                            <td>MED100</td>
-                            <td>SEMIOLOGIA I</td>
-                            <td>CARDIOVASCULAR</td>
-                            <td>14</td>
-                            <td>14</td>
-                            <td>(AP01 * 1)/1</td>
-                            <td>14</td>
-                            <td>M</td>
-                            <td>5C</td>
-                            <td>B</td>
-                            <td>MONTANO CHAPARRO VLADIMIRO INTI</td>
-                        </tr>
-                        <tr>
-                            <td>MED100</td>
-                            <td>SEMIOLOGIA I</td>
-                            <td>RESPIRATORIO</td>
-                            <td>16</td>
-                            <td>16</td>
-                            <td>(AP01 * 1)/1</td>
-                            <td>16</td>
-                            <td>M</td>
-                            <td>5C</td>
-                            <td>C</td>
-                            <td>TISOC HINOJOSA CARLOS ARTURO</td>
-                        </tr>
-                        <tr>
-                            <td>MED100</td>
-                            <td>SEMIOLOGIA I</td>
-                            <td>DIGESTIVO</td>
-                            <td>13</td>
-                            <td>13</td>
-                            <td>(AP01 * 1)/1</td>
-                            <td>13</td>
-                            <td>M</td>
-                            <td>5C</td>
-                            <td>D</td>
-                            <td>CUEVAS CISNEROS JIMY WILLIAMS</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
             <div class="modal-footer">
                 <button class="btn-close-modal" onclick="closeModal('gradesModal')">
@@ -478,7 +1168,8 @@
                 <p>Esta sección se encuentra temporalmente en mantenimiento.</p>
                 <p>Por favor, inténtelo más tarde.</p>
                 <div class="maintenance-signature">
-                    <img src="images/logo-uac.png" alt="UAC Logo" class="maintenance-logo">
+                    <img src="data:image/png;base64,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"
+                        alt="UAC Logo" class="maintenance-logo">
                     <p><strong>Atte.</strong></p>
                     <p><strong>UNIVERSIDAD ANDINA DEL CUSCO</strong></p>
                 </div>
@@ -491,6 +1182,80 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // Add interactivity for menu toggle
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Semester dropdown change
+        const semesterSelect = document.querySelector('.semester-select select');
+        if (semesterSelect) {
+            semesterSelect.addEventListener('change', function () {
+                console.log('Semester changed to:', this.value);
+            });
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModal(this.id);
+                }
+            });
+        });
+
+        // Escape key to close modals
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal.active').forEach(modal => {
+                    closeModal(modal.id);
+                });
+            }
+        });
+
+        // Add click event to "Reporte de Notas Detalladas" link
+        document.addEventListener('DOMContentLoaded', function () {
+            // Link for detailed grades report
+            const detailedGradesLink = document.getElementById('detailedGradesLink');
+            if (detailedGradesLink) {
+                detailedGradesLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openModal('gradesModal');
+                });
+            }
+
+            // Links for maintenance pages
+            const maintenanceLinks = document.querySelectorAll('.report-link[data-maintenance="true"]');
+            maintenanceLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openModal('maintenanceModal');
+                });
+            });
+        });
+
+    </script>
 </body>
+
 </html>
